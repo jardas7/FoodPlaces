@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C22572C81EF46796009692B5 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22572C71EF46796009692B5 /* LocationSearchTable.swift */; };
+		C22572D31EF5A14B009692B5 /* ShowMapDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22572D21EF5A14B009692B5 /* ShowMapDetail.swift */; };
 		C262ACBA1EEBF2F1002FF1DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C262ACB91EEBF2F1002FF1DD /* AppDelegate.swift */; };
 		C262ACBC1EEBF2F1002FF1DD /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C262ACBB1EEBF2F1002FF1DD /* FirstViewController.swift */; };
-		C262ACBE1EEBF2F1002FF1DD /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C262ACBD1EEBF2F1002FF1DD /* SecondViewController.swift */; };
 		C262ACC11EEBF2F1002FF1DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C262ACBF1EEBF2F1002FF1DD /* Main.storyboard */; };
 		C262ACC31EEBF2F1002FF1DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C262ACC21EEBF2F1002FF1DD /* Assets.xcassets */; };
 		C262ACC61EEBF2F1002FF1DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C262ACC41EEBF2F1002FF1DD /* LaunchScreen.storyboard */; };
@@ -19,10 +20,11 @@
 		C262ACED1EEC6D58002FF1DD /* Jidlo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C262ACEC1EEC6D58002FF1DD /* Jidlo.swift */; };
 		C262ACEF1EEC6D6C002FF1DD /* Restaurace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C262ACEE1EEC6D6C002FF1DD /* Restaurace.swift */; };
 		C262ACF11EEC7475002FF1DD /* JidloTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C262ACF01EEC7475002FF1DD /* JidloTableViewCell.swift */; };
-		C262ACF31EEC7493002FF1DD /* RestauraceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C262ACF21EEC7493002FF1DD /* RestauraceTableViewCell.swift */; };
 		C262ACF51EEC772B002FF1DD /* JidloTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C262ACF41EEC772B002FF1DD /* JidloTableViewController.swift */; };
 		C262ACF91EEEFA70002FF1DD /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C262ACF81EEEFA70002FF1DD /* MapsViewController.swift */; };
 		C2AB77B61EF1F5B100A97644 /* RatingControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2AB77B51EF1F5B100A97644 /* RatingControl.swift */; };
+		C2D561A41EF7AFD20031BBF4 /* RestauraceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D561A31EF7AFD20031BBF4 /* RestauraceTableViewCell.swift */; };
+		C2D561A61EF7B18B0031BBF4 /* RestauraceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D561A51EF7B18B0031BBF4 /* RestauraceTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,10 +45,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C22572C71EF46796009692B5 /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
+		C22572D21EF5A14B009692B5 /* ShowMapDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMapDetail.swift; sourceTree = "<group>"; };
 		C262ACB61EEBF2F1002FF1DD /* FoodPlaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodPlaces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262ACB91EEBF2F1002FF1DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C262ACBB1EEBF2F1002FF1DD /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		C262ACBD1EEBF2F1002FF1DD /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		C262ACC01EEBF2F1002FF1DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C262ACC21EEBF2F1002FF1DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C262ACC51EEBF2F1002FF1DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -61,10 +64,11 @@
 		C262ACEC1EEC6D58002FF1DD /* Jidlo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Jidlo.swift; sourceTree = "<group>"; };
 		C262ACEE1EEC6D6C002FF1DD /* Restaurace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Restaurace.swift; sourceTree = "<group>"; };
 		C262ACF01EEC7475002FF1DD /* JidloTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JidloTableViewCell.swift; sourceTree = "<group>"; };
-		C262ACF21EEC7493002FF1DD /* RestauraceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestauraceTableViewCell.swift; sourceTree = "<group>"; };
 		C262ACF41EEC772B002FF1DD /* JidloTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JidloTableViewController.swift; sourceTree = "<group>"; };
 		C262ACF81EEEFA70002FF1DD /* MapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
 		C2AB77B51EF1F5B100A97644 /* RatingControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingControl.swift; sourceTree = "<group>"; };
+		C2D561A31EF7AFD20031BBF4 /* RestauraceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestauraceTableViewCell.swift; sourceTree = "<group>"; };
+		C2D561A51EF7B18B0031BBF4 /* RestauraceTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestauraceTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,18 +123,20 @@
 			children = (
 				C262ACB91EEBF2F1002FF1DD /* AppDelegate.swift */,
 				C262ACBB1EEBF2F1002FF1DD /* FirstViewController.swift */,
-				C262ACBD1EEBF2F1002FF1DD /* SecondViewController.swift */,
 				C262ACF41EEC772B002FF1DD /* JidloTableViewController.swift */,
 				C262ACF01EEC7475002FF1DD /* JidloTableViewCell.swift */,
-				C262ACF21EEC7493002FF1DD /* RestauraceTableViewCell.swift */,
 				C262ACEC1EEC6D58002FF1DD /* Jidlo.swift */,
 				C262ACEE1EEC6D6C002FF1DD /* Restaurace.swift */,
+				C2AB77B51EF1F5B100A97644 /* RatingControl.swift */,
 				C262ACF81EEEFA70002FF1DD /* MapsViewController.swift */,
+				C22572C71EF46796009692B5 /* LocationSearchTable.swift */,
+				C22572D21EF5A14B009692B5 /* ShowMapDetail.swift */,
+				C2D561A31EF7AFD20031BBF4 /* RestauraceTableViewCell.swift */,
+				C2D561A51EF7B18B0031BBF4 /* RestauraceTableViewController.swift */,
 				C262ACC21EEBF2F1002FF1DD /* Assets.xcassets */,
 				C262ACBF1EEBF2F1002FF1DD /* Main.storyboard */,
 				C262ACC41EEBF2F1002FF1DD /* LaunchScreen.storyboard */,
 				C262ACC71EEBF2F1002FF1DD /* Info.plist */,
-				C2AB77B51EF1F5B100A97644 /* RatingControl.swift */,
 			);
 			path = FoodPlaces;
 			sourceTree = "<group>";
@@ -302,10 +308,12 @@
 			files = (
 				C262ACF91EEEFA70002FF1DD /* MapsViewController.swift in Sources */,
 				C262ACEF1EEC6D6C002FF1DD /* Restaurace.swift in Sources */,
-				C262ACBE1EEBF2F1002FF1DD /* SecondViewController.swift in Sources */,
+				C2D561A41EF7AFD20031BBF4 /* RestauraceTableViewCell.swift in Sources */,
 				C262ACF51EEC772B002FF1DD /* JidloTableViewController.swift in Sources */,
+				C2D561A61EF7B18B0031BBF4 /* RestauraceTableViewController.swift in Sources */,
+				C22572D31EF5A14B009692B5 /* ShowMapDetail.swift in Sources */,
 				C262ACF11EEC7475002FF1DD /* JidloTableViewCell.swift in Sources */,
-				C262ACF31EEC7493002FF1DD /* RestauraceTableViewCell.swift in Sources */,
+				C22572C81EF46796009692B5 /* LocationSearchTable.swift in Sources */,
 				C262ACED1EEC6D58002FF1DD /* Jidlo.swift in Sources */,
 				C262ACBA1EEBF2F1002FF1DD /* AppDelegate.swift in Sources */,
 				C2AB77B61EF1F5B100A97644 /* RatingControl.swift in Sources */,

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MapKit
 import os.log
 
 extension UIViewController
@@ -25,8 +26,10 @@ extension UIViewController
     }
 }
 
-class FirstViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class FirstViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
+    
+    @IBOutlet var restauraceNazev: UITextField!
     @IBOutlet weak var shadowSrc: UIView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var fieldPopis: UITextField!
@@ -36,10 +39,35 @@ class FirstViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     @IBOutlet weak var fieldNazev: UITextField!
     @IBOutlet weak var buttonUlozit: UIBarButtonItem!
     var jidlo: Jidlo?
+    var restaurace = [Restaurace]()
+    var pickerDataSource = [String]();
+    @IBOutlet weak var pickerView: UIPickerView!
+    var selectedRow: Int = 0
+    var selectedRow2: Int = 0
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        // Nejprve se musí uložit restaurace aby to chodilo, jinak to je nil a já teda načtu 3 které jsou default
+        if nactiRestauraceZFile()?.count == nil{
+            let restaurace1 = Restaurace(nazev: "Čínská restaurace U Bílého koníčka",longitude: 15.7794185, latitude: 50.0383195, adresa: "Pardubice Pardubický")
+            
+            let restaurace2 = Restaurace(nazev: "Restaurace Šatlava",longitude: 15.834752121084945, latitude: 50.210826655876538,  adresa: "Hradec Králové Královéhradecký")
+            
+            let restaurace3 = Restaurace(nazev: "Steak Station", longitude: 15.804130733095, latitude: 50.043211472166703, adresa: "Pardubice Pardubický")
+            restaurace += [restaurace1!, restaurace2!, restaurace3!]
+        }else{
+            restaurace = nactiRestauraceZFile()!
+        }
+        
+        
+        for item in restaurace{
+            pickerDataSource.append(item.nazev)
+        }
+        
+        self.pickerView.dataSource = self;
+        self.pickerView.delegate = self;
         
         shadowSrc.layer.shadowColor = UIColor.gray.cgColor
         shadowSrc.layer.shadowOpacity = 1
@@ -53,17 +81,12 @@ class FirstViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         fieldNazev.delegate = self
         fieldCena.delegate = self
         fieldPopis.delegate = self
-        
         fieldCena.keyboardType = UIKeyboardType.decimalPad
  
         let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
         edgePan.edges = .left
         
         view.addGestureRecognizer(edgePan)
-        
-        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
-        //tap.cancelsTouchesInView = false
-        
         
         if let jidlo = jidlo {
             navigationItem.title = jidlo.nazev
@@ -72,9 +95,20 @@ class FirstViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             fieldCena.text   = jidlo.cena
             imageView.image = jidlo.foto
             ratingControl.rating = jidlo.rating
-            //Dodelat lokaci
         }
         
+        var posuvnik: Int = 0
+        if jidlo?.restaurace != nil {
+            for item in restaurace {
+                if item.nazev == jidlo?.restaurace.nazev {
+                    print("Nastavuju pos", posuvnik)
+                    selectedRow2 = posuvnik
+                }
+                    posuvnik += 1
+                print("Posuvnik", posuvnik)
+            }
+            pickerView.selectRow(selectedRow2, inComponent: 0, animated: true)
+        }
         updateUlozit()
     }
     
@@ -93,8 +127,6 @@ class FirstViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             else {
                 fatalError("The MealViewController is not inside a navigation controller.")
             }
-
-            
         }
     }
     
@@ -115,28 +147,19 @@ class FirstViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        print("imgPickerCancel")
-        // Dismiss the picker if the user canceled.
         dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        // The info dictionary may contain multiple representations of the image. You want to use the original.
-         print("imgContrl")
         guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
         
-        // Set photoImageView to display the selected image.
         imageView.image = selectedImage
-        
-        // Dismiss the picker.
         dismiss(animated: true, completion: nil)
     }
     
     @IBAction func seletImageFromPhotoLibrary(_ sender: UITapGestureRecognizer) {
-        print("Vybírá se obrázek")
         
         // Klávesnice zajede
         fieldNazev.delegate = self
@@ -156,37 +179,10 @@ class FirstViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         dialogZdroj.addAction(zvolFotoaparat)
         dialogZdroj.addAction(zvolKnihovna)
         dialogZdroj.addAction(zvolZrusit)
-        
         present(dialogZdroj, animated: true, completion: nil)
     }
     
-    @IBAction func upravDetailObr(_ sender: UILongPressGestureRecognizer) {
-        
-        print("Edituje se obrázek")
-        
-        // Klávesnice zajede
-        fieldNazev.delegate = self
-        fieldPopis.resignFirstResponder()
-        fieldCena.resignFirstResponder()
-        
-        // Udělám dialog na vybrání zdroje
-        let dialogZdroj = UIAlertController(title: "Výběr zdroje fotografie", message: "Vyberte si z jakého zdroje chcete fotografii Vámi oblíbeného jídla pořídit", preferredStyle: UIAlertControllerStyle.actionSheet)
-        
-        let zvolFotoaparat = UIAlertAction(title: "Fotoaparát", style: UIAlertActionStyle.default, handler: handlerFotoaparat)
-        
-        let zvolKnihovna = UIAlertAction(title: "Fotogalerie", style: UIAlertActionStyle.default, handler: handlerFotogalerie)
-        
-        let zvolZrusit = UIAlertAction(title: "Zrušit", style: UIAlertActionStyle.cancel, handler: nil)
-        
-        // Nacpání do dialogu
-        dialogZdroj.addAction(zvolFotoaparat)
-        dialogZdroj.addAction(zvolKnihovna)
-        dialogZdroj.addAction(zvolZrusit)
-        
-        present(dialogZdroj, animated: true, completion: nil)
-    }
-    
-    
+
     func handlerFotoaparat(alert: UIAlertAction){
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
@@ -197,14 +193,9 @@ class FirstViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     
     func handlerFotogalerie(alert: UIAlertAction){
         let imagePickerController = UIImagePickerController()
-        
-        // Only allow photos to be picked, not taken.
         imagePickerController.sourceType = .photoLibrary
-        
-        // Make sure ViewController is notified when the user picks an image.
         imagePickerController.delegate = self
         present(imagePickerController, animated: true, completion: nil)
-        
         
     }
     
@@ -241,18 +232,60 @@ class FirstViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             return
         }
         
+        
+        
         let nazevJidla = fieldNazev.text ?? ""
         let popisJidla = fieldPopis.text ?? ""
         let cenaJidla = fieldCena.text ?? ""
         let fotoJidla = imageView.image
         let ratingJidla = ratingControl.rating
-        // dodelat restaurace
+       
         
-        // Set the meal to be passed to MealTableViewController after the unwind segue.
-        jidlo = Jidlo(nazev: nazevJidla, popis: popisJidla, cena: cenaJidla, foto: fotoJidla, rating: ratingJidla)
+        if jidlo?.restaurace != nil {
+            if selectedRow2 != selectedRow {
+                selectedRow2 = selectedRow
+            }
+            
+            let restauraceEnd = self.restaurace[selectedRow2]
+            print("jsem tu 1 - edit")
+            jidlo = Jidlo(nazev: nazevJidla, popis: popisJidla, cena: cenaJidla, foto: fotoJidla, rating: ratingJidla, restaurace: restauraceEnd)
+            
+        } else {
+             let restaurace = self.restaurace[selectedRow]
+            print("jsem tu 1 - add")
+         self.jidlo = Jidlo(nazev: nazevJidla, popis: popisJidla, cena: cenaJidla, foto: fotoJidla, rating: ratingJidla, restaurace: restaurace)
+        }
     }
     
- 
+    private func nactiRestauraceZFile() -> [Restaurace]?  {
+        return NSKeyedUnarchiver.unarchiveObject(withFile: Restaurace.ArchiveURL.path) as? [Restaurace]
+    }
     
-
+    @available(iOS 2.0, *)
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerDataSource.count;
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerDataSource[row]
+        
+    }
+    
+    func vraceniRestaurace(row: Int) -> Restaurace {
+        return restaurace[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedRow = row
+        print(selectedRow)
+    }
 }

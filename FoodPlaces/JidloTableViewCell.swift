@@ -13,13 +13,14 @@ class JidloTableViewCell: UITableViewCell {
     @IBOutlet weak var labelNazev: UILabel!
     @IBOutlet weak var imageViewFood: UIImageView!
     
+    @IBOutlet weak var restauraceNazev: UILabel!
     @IBOutlet weak var ratingControl: RatingControl!
     @IBOutlet weak var shadowView: UIView!
     
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
         imageViewFood.clipsToBounds = true
         imageViewFood.layer.cornerRadius = 8
         
@@ -34,8 +35,6 @@ class JidloTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
 }

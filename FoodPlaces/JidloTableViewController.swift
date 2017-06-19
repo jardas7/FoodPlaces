@@ -7,33 +7,42 @@
 //
 
 import UIKit
+import MapKit
 import os.log
 
 class JidloTableViewController: UITableViewController {
     
     var jidla = [Jidlo]()
+    var restaurace = [Restaurace]()
+    var point = Int()
+    @IBOutlet weak var showButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         self.navigationItem.leftBarButtonItem?.title = "Upravit"
-       
-        print("Nacitam")
         
         if let ulozenaJidla = nactiJidla() {
             jidla += ulozenaJidla
         }
         else {
-            // Load the sample data.
             nactiUvodni()
         }
     }
-
+    
+    @IBAction func showMap(_ sender: UIButton) {
+        let pointInTable: CGPoint =         sender.convert(sender.bounds.origin, to: self.tableView)
+        let cellIndexPath = self.tableView.indexPathForRow(at: pointInTable)
+        point = cellIndexPath!.row
+        let myVC = storyboard?.instantiateViewController(withIdentifier: "showMapDetail") as! ShowMapDetail
+        myVC.lokaceCil = CLLocationCoordinate2D(latitude: CLLocationDegrees(jidla[point].restaurace.latitude), longitude: CLLocationDegrees(jidla[point].restaurace.longitude))
+        myVC.nazev  = jidla[point].restaurace.nazev
+        myVC.adresa = jidla[point].restaurace.adresa
+        navigationController?.pushViewController(myVC, animated: true)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func setEditing (_ editing:Bool, animated:Bool)
@@ -48,74 +57,54 @@ class JidloTableViewController: UITableViewController {
         }
     }
 
-    
-    // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return jidla.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "JidloTableViewCell"
-        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? JidloTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of MealTableViewCell.")
+            fatalError("")
         }
         
-        // Fetches the appropriate meal for the data source layout.
         let jidlo = jidla[indexPath.row]
-        
         cell.labelNazev.text = jidlo.nazev
         cell.imageViewFood.image = jidlo.foto
         cell.labelCena.text = jidlo.cena
         cell.ratingControl.rating = jidlo.rating
-        
+        cell.restauraceNazev.text = jidlo.restaurace.nazev
         return cell
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
             jidla.remove(at: indexPath.row)
             ulozJidla()
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
     
     //Funkce storyboard
     @IBAction func ulozJidloDoListu(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? FirstViewController, let jidlo = sourceViewController.jidlo {
-            
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                // Update an existing meal.
                 jidla[selectedIndexPath.row] = jidlo
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
-            }
-            else
-            {
-            // Add a new meal.
+            } else {
             let newIndexPath = IndexPath(row: jidla.count, section: 0)
-            
             jidla.append(jidlo)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
-            
-            ulozJidla()
+        ulozJidla()
         }
     }
 
@@ -125,14 +114,10 @@ class JidloTableViewController: UITableViewController {
             }
     
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         super.prepare(for: segue, sender: sender)
-        
         switch(segue.identifier ?? "") {
-            
+        
         case "PridaniJidlo":
             os_log("Přídávám nové jídlo.", log: OSLog.default, type: .debug)
             
@@ -156,8 +141,6 @@ class JidloTableViewController: UITableViewController {
         default:
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
         }
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
     
     
@@ -168,17 +151,23 @@ class JidloTableViewController: UITableViewController {
         let foto2 = UIImage(named: "tatarak")
         let foto3 = UIImage(named: "gulas")
         
-        guard let jidlo1 = Jidlo(nazev: "Italská polévka", popis: "Moc dobrá Minestrone, paráda!", cena: "59", foto: foto1, rating: 3)
+        let restaurace1 = Restaurace(nazev: "Čínská restaurace U Bílého koníčka",longitude: 15.7794185, latitude: 50.0383195, adresa: "Pardubice Pardubický")
+        
+        let restaurace2 = Restaurace(nazev: "Restaurace Šatlava",longitude: 15.834752121084945, latitude: 50.210826655876538,  adresa: "Hradec Králové Královéhradecký")
+        
+        let restaurace3 = Restaurace(nazev: "Steak Station", longitude: 15.804130733095, latitude: 50.043211472166703, adresa: "Pardubice Pardubický")
+        
+        guard let jidlo1 = Jidlo(nazev: "Čínská polévka", popis: "Moc dobrá Minestrone, paráda!", cena: "59", foto: foto1, rating: 3, restaurace: restaurace1!)
             else { fatalError("aaa") }
         
-        guard let jidlo2 = Jidlo(nazev: "Tatarský biftek", popis: "Zajímavá kombinace, s hranolkami jsem to ještě nezkoušel.", cena: "199", foto: foto2, rating: 4)
+        guard let jidlo2 = Jidlo(nazev: "Tatarský biftek", popis: "Zajímavá kombinace, s hranolkami jsem to ještě nezkoušel.", cena: "199", foto: foto2, rating: 4, restaurace: restaurace2!)
             else { fatalError("bbb") }
         
-        guard let jidlo3 = Jidlo(nazev: "Dančí guláš", popis: "Miluju zvěřinu!! 🐗", cena: "89", foto: foto3, rating: 3)
+        guard let jidlo3 = Jidlo(nazev: "Dančí guláš", popis: "Miluju zvěřinu!! 🐗", cena: "89", foto: foto3, rating: 3, restaurace: restaurace3!)
             else { fatalError("ccc") }
         
         jidla += [jidlo1, jidlo2, jidlo3]
-        
+        restaurace += [restaurace1!, restaurace2!, restaurace3!]
     }
 
     
@@ -194,5 +183,7 @@ class JidloTableViewController: UITableViewController {
     private func nactiJidla() -> [Jidlo]?  {
         return NSKeyedUnarchiver.unarchiveObject(withFile: Jidlo.ArchiveURL.path) as? [Jidlo]
     }
+    
+    
 
 }

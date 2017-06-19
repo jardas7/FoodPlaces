@@ -15,21 +15,23 @@ class Jidlo: NSObject, NSCoding{
     var popis: String
     var cena: String
     var foto: UIImage?
+    var restaurace: Restaurace
     var rating: Int
     
     //cesta k file
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("jidla")
-    
+    //static let ArchiveURL = DocumentsDirectory.appendingPathComponent("ulozisteJidla")
+    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("dataJidlo")
     struct PropertyKey {
         static let nazev = "nazev"
         static let popis = "popis"
         static let cena = "cena"
         static let foto = "foto"
         static let rating = "rating"
+        static let restaurace = "restaurace"
     }
     
-    init?(nazev: String, popis: String, cena: String, foto: UIImage?, rating: Int) {
+    init?(nazev: String, popis: String, cena: String, foto: UIImage?, rating: Int, restaurace: Restaurace) {
         
         guard !nazev.isEmpty else {
             return nil
@@ -49,6 +51,7 @@ class Jidlo: NSObject, NSCoding{
         self.cena = cena
         self.foto = foto
         self.rating = rating
+        self.restaurace = restaurace
         
        
     }
@@ -59,6 +62,7 @@ class Jidlo: NSObject, NSCoding{
         aCoder.encode(cena, forKey: PropertyKey.cena)
         aCoder.encode(foto, forKey: PropertyKey.foto)
         aCoder.encode(rating, forKey: PropertyKey.rating)
+        aCoder.encode(restaurace, forKey: PropertyKey.restaurace)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -84,9 +88,14 @@ class Jidlo: NSObject, NSCoding{
         let foto = aDecoder.decodeObject(forKey: PropertyKey.foto) as? UIImage
         
         let rating = aDecoder.decodeInteger(forKey: PropertyKey.rating)
+
+        guard let restaurace = aDecoder.decodeObject(forKey: PropertyKey.restaurace) as? Restaurace
+            else {
+                os_log("Nelze načíst restauraci", log: OSLog.default, type: .debug)
+                return nil
+        }
         
-        // Must call designated initializer.
-        self.init(nazev: nazev, popis: popis, cena: cena, foto: foto, rating: rating)
+        self.init(nazev: nazev, popis: popis, cena: cena, foto: foto, rating: rating, restaurace: restaurace)
         
     }
 }
